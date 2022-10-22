@@ -4,6 +4,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Stats from 'three/examples/jsm/libs/stats.module'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
+
 @Component({
   selector: 'app-three-d-models',
   templateUrl: './three-d-models.component.html',
@@ -21,20 +22,25 @@ export class ThreeDModelsComponent implements OnInit {
   private setSecen():void{
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer();
+
+    camera.position.z = 2
+    camera.position.y = 1
+    const canvas1 = document.getElementById('vesselCanvas') as HTMLCanvasElement
+    const renderer = new THREE.WebGLRenderer({canvas : canvas1});
+    const controls = new OrbitControls(camera, renderer.domElement)
+    controls.addEventListener('change', render)
     const light = new THREE.HemisphereLight(0xffeeb1, 0x080820, 2);
     const loader = new GLTFLoader();
 	
     renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+//     document.body.appendChild(renderer.domElement);
 
-    loader.load('3dModels/engine2.glb',GLTF, XHR);
+    loader.load('assets/3dModels/Vesselv2.glb',GLTF, XHR);
     let root:any
     function GLTF(GLTF:any){
       root = GLTF.scene;
-      root.scale.set(0.12,0.12,0.12);
+      root.scale.set(0.30,0.30,0.30);
       scene.add(root);
-      console.log(GLTF)
     }
     function XHR(xhr:any){
       console.log('XHR ->', (xhr.loader / xhr.total) * 100)
@@ -45,9 +51,16 @@ export class ThreeDModelsComponent implements OnInit {
     const animate = function () {
       requestAnimationFrame(animate);
       renderer.render(scene, camera);
+      if(root?.rotation?.y){
+         root.rotation.y += 0.01;
+      }
+
     };
     camera.position.z = 5;
     renderer.render(scene, camera);
+    function render() {
+      renderer.render(scene, camera)
+    }
     animate();
   }
 
