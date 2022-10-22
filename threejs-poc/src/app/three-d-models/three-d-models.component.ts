@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import Stats from 'three/examples/jsm/libs/stats.module'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
 
@@ -22,8 +21,7 @@ export class ThreeDModelsComponent implements OnInit {
   private setSecen():void{
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-    camera.position.z = 2
+    camera.position.z = 3
     camera.position.y = 1
     const canvas1 = document.getElementById('vesselCanvas') as HTMLCanvasElement
     const renderer = new THREE.WebGLRenderer({canvas : canvas1});
@@ -39,7 +37,7 @@ export class ThreeDModelsComponent implements OnInit {
     let root:any
     function GLTF(GLTF:any){
       root = GLTF.scene;
-      root.scale.set(0.30,0.30,0.30);
+      root.scale.set(0.14,0.14,0.14);
       scene.add(root);
     }
     function XHR(xhr:any){
@@ -56,7 +54,6 @@ export class ThreeDModelsComponent implements OnInit {
       }
 
     };
-    camera.position.z = 5;
     renderer.render(scene, camera);
     function render() {
       renderer.render(scene, camera)
