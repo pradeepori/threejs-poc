@@ -1,8 +1,8 @@
 import { Component, OnInit} from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import Stats from 'three/examples/jsm/libs/stats.module'
 
 @Component({
   selector: 'app-three-d-models',
@@ -17,7 +17,7 @@ export class ThreeDModelsComponent implements OnInit {
   ngOnInit(): void {
     this.setSecen();
   }
-
+ 
   private setSecen():void{
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -41,15 +41,19 @@ export class ThreeDModelsComponent implements OnInit {
       scene.add(root);
     }
     function XHR(xhr:any){
-      console.log('XHR ->', (xhr.loader / xhr.total) * 100)
+      console.log((xhr.loader / xhr.total) * 100)
     }
 
     scene.add(light);
 
+    const stats = Stats();
+    document.body.appendChild(stats.dom);
+
     const animate = function () {
       requestAnimationFrame(animate);
       renderer.render(scene, camera);
-      if(root?.rotation?.y){
+      stats.update();
+      if(root?.rotation){
          root.rotation.y += 0.01;
       }
 

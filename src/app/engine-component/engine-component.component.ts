@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import Stats from 'three/examples/jsm/libs/stats.module'
 
 @Component({
   selector: 'app-engine-component',
@@ -24,7 +25,8 @@ export class EngineComponentComponent implements OnInit {
     controls.addEventListener('change', render)
     const light = new THREE.HemisphereLight(0xffeeb1, 0x080820, 2);
     const loader = new GLTFLoader();
-
+    const stats = Stats();
+    document.body.appendChild(stats.dom);
     renderer.setSize(window.innerWidth, window.innerHeight);
     //     document.body.appendChild(renderer.domElement);
 
@@ -43,7 +45,8 @@ export class EngineComponentComponent implements OnInit {
     const animate = function () {
       requestAnimationFrame(animate);
       renderer.render(scene, camera);
-      if(root?.rotation?.y){
+      stats.update();
+      if(root?.rotation){
         root.rotation.y += 0.01;
       }
 
